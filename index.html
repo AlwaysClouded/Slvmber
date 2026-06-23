@@ -1,24 +1,136 @@
-<!-- DISCORD PRESENCE PANEL -->
-<div class="presence-card">
-  <div class="presence-header">
-    <span class="presence-dot" id="dp-status-dot"></span>
-    <span class="presence-username" id="dp-username">Loading...</span>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Slvmber</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="bg">
+    <canvas id="bg-canvas"></canvas>
+    <div class="bg-overlay"></div>
   </div>
 
-  <div class="presence-body">
-    <img id="dp-avatar" class="presence-avatar" src="https://cdn.discordapp.com/embed/avatars/0.png" />
-    <p id="dp-custom-status" class="presence-custom">Connecting...</p>
-  </div>
-</div>
+  <audio id="bg-audio" src="Kenshi Yonezu - IRIS OUT.mp3" loop muted></audio>
 
-<!-- SPOTIFY PANEL -->
-<div class="spotify-card">
-  <div class="spotify-header">LISTENING NOW</div>
-  <div class="spotify-body">
-    <img id="spotify-cover" class="spotify-cover" src="https://i.imgur.com/8QfQFfC.png" />
-    <div class="spotify-meta">
-      <div id="spotify-title" class="spotify-title">Not playing anything</div>
-      <div id="spotify-artist" class="spotify-artist"></div>
-    </div>
-  </div>
-</div>
+  <main class="layout">
+    <!-- LEFT HERO -->
+    <section class="hero hero-soft">
+      <header class="hero-top">
+        <div class="brand-mark">SLVMVERSE</div>
+        <button id="music-unlock" class="btn-ghost">UNMUTE TRACK</button>
+      </header>
+
+      <div class="hero-main hero-main-soft">
+        <div class="avatar-orbit avatar-soft">
+          <div class="avatar-ring outer"></div>
+          <div class="avatar-ring inner"></div>
+          <div class="avatar-core">
+            <img id="dp-avatar" src="https://cdn.discordapp.com/embed/avatars/1.png" alt="Avatar" />
+          </div>
+        </div>
+
+        <div class="hero-text hero-text-soft">
+          <h1 class="hero-name-script">Slvmber</h1>
+          <h2 id="hero-handle" class="hero-handle-grunge">@slvmber</h2>
+          <p class="hero-tagline">
+            Sage, rose, and charcoal — a cozy‑grunge corner of the internet wrapped around her presence.
+          </p>
+
+          <div class="hero-actions hero-actions-soft">
+            <button id="copy-link" class="btn-solid-soft">
+              COPY PROFILE LINK
+            </button>
+            <a href="https://alwaysclouded.github.io/Fade/" class="btn-outline-soft">
+              SWITCH TO FADE
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <footer class="hero-footer hero-footer-soft">
+        <span>Made by Clouded •API by Clouded • Watched by Jester• Owned by Clouded • 2026</span>
+      </footer>
+    </section>
+
+    <!-- RIGHT SOFT HYBRID SIDEBAR -->
+    <aside class="sidebar sidebar-soft">
+      <div class="sidebar-shell sidebar-shell-soft">
+        <!-- Presence Card -->
+        <section class="card card-soft card-presence">
+          <header class="card-header">
+            <span class="card-label">PRESENCE</span>
+            <span id="dp-status-dot" class="status-dot"></span>
+          </header>
+          <div class="card-body">
+            <span id="dp-username" class="discord-name">Loading...</span>
+            <span id="dp-status-text" class="discord-status">Connecting</span>
+            <p id="dp-custom-status" class="discord-custom">Waiting for API...</p>
+          </div>
+        </section>
+
+        <!-- Spotify Card -->
+        <section class="card card-soft card-spotify">
+          <header class="card-header">
+            <span class="card-label">SPOTIFY</span>
+          </header>
+          <div class="card-body spotify-body">
+            <div class="spotify-cover-wrap">
+              <img id="spotify-cover" src="https://i.imgur.com/8QfQFfC.png" alt="Spotify Cover" />
+              <div class="spotify-glow-soft"></div>
+            </div>
+            <div class="spotify-meta">
+              <div id="spotify-title" class="spotify-title">Not playing anything</div>
+              <div id="spotify-artist" class="spotify-artist"></div>
+
+              <div class="spotify-progress" style="display:none;">
+                <span id="spotify-elapsed">0:00</span>
+                <div class="spotify-bar spotify-bar-soft">
+                  <div id="spotify-bar-fill"></div>
+                </div>
+                <span id="spotify-duration">0:00</span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Activity Card -->
+        <section class="card card-soft card-game">
+          <header class="card-header">
+            <span class="card-label">ACTIVITY</span>
+            <span id="platform-pill" class="platform-pill-soft">IDLE</span>
+          </header>
+          <div class="card-body game-body">
+            <div class="game-cover-wrap">
+              <img id="activity-cover" src="https://i.imgur.com/8QfQFfC.png" alt="Activity Cover" />
+            </div>
+            <div class="game-meta">
+              <div class="game-header">
+                <img id="activity-icon" class="game-icon" src="https://i.imgur.com/8QfQFfC.png" alt="Activity Icon" />
+                <div id="activity-title" class="game-title">Not doing much</div>
+              </div>
+              <div id="activity-details" class="game-details"></div>
+              <div id="activity-time" class="game-time-soft"></div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Live Feed Card -->
+        <section class="card card-soft card-log">
+          <header class="card-header">
+            <span class="card-label">LIVE FEED</span>
+          </header>
+          <div class="card-body log-body">
+            <div id="log-output" class="log-output">
+              <span class="log-line">[API] Initializing cozy‑grunge...</span>
+            </div>
+          </div>
+        </section>
+      </div>
+    </aside>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
