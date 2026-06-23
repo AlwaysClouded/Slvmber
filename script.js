@@ -6,8 +6,6 @@ const API_URL = `https://jester-presence-api.onrender.com/api/presence?user=${US
 
 // Track last states
 let lastTrackId = null;
-let lastActivityState = null;
-let activityTimerInterval = null;
 let spotifyInterval = null;
 
 // ===============================
@@ -54,7 +52,6 @@ async function fetchPresence() {
 
     updatePresence(p);
     updateSpotify(p.spotify);
-    updateActivity(p.xbox || p.game || p.activities?.[0] || null);
 
     logLine("[API] Presence updated");
   } catch (err) {
@@ -99,7 +96,7 @@ function updatePresence(p) {
 }
 
 // ===============================
-// SPOTIFY PANEL (AUTO-HIDE BAR)
+// SPOTIFY PANEL
 // ===============================
 function formatTime(ms) {
   const total = Math.floor(ms / 1000);
@@ -184,110 +181,11 @@ function updateSpotify(spotify) {
 }
 
 // ===============================
-// ACTIVITY PANEL
-// ===============================
-function getActivityLogo(name, activity) {
-  if (!name) return "https://i.imgur.com/8QfQFfC.png";
-
-  const n = name.toLowerCase();
-
-  if (n.includes("spotify")) return "https://i.imgur.com/8QfQFfC.png";
-  if (n.includes("fortnite")) return "https://i.imgur.com/0ZQ9Q0X.png";
-  if (n.includes("apex")) return "https://i.imgur.com/7x0yY8M.png";
-  if (n.includes("minecraft")) return "https://i.imgur.com/8n4z0Qp.png";
-
-  if (activity?.applicationId?.startsWith?.("xbox"))
-    return "https://i.imgur.com/1uXKp8y.png";
-
-  if (activity?.applicationId?.startsWith?.("ps"))
-    return "https://i.imgur.com/3j1Yx0X.png";
-
-  return "https://i.imgur.com/8QfQFfC.png";
-}
-
-function updateActivity(activity) {
-  const cover = document.getElementById("activity-cover");
-  const title = document.getElementById("activity-title");
-  const details = document.getElementById("activity-details");
-  const panel = document.querySelector(".card-game");
-  const icon = document.getElementById("activity-icon");
-  const timePlayed = document.getElementById("activity-time");
-  const platformPill = document.getElementById("platform-pill");
-
-  if (!cover || !title || !details || !panel || !icon || !timePlayed || !platformPill) return;
-
-  if (!activity) {
-    if (lastActivityState !== null) {
-      title.textContent = "Not doing much";
-      details.textContent = "";
-      cover.src = "https://i.imgur.com/8QfQFfC.png";
-      icon.src = "https://i.imgur.com/8QfQFfC.png";
-      timePlayed.textContent = "";
-      platformPill.textContent = "IDLE";
-      panel.classList.remove("active");
-      lastActivityState = null;
-      if (activityTimerInterval) clearInterval(activityTimerInterval);
-      logLine("[Activity] Idle");
-    }
-    return;
-  }
-
-  const name = activity.name || "Activity";
-  const state = activity.details || activity.state || "";
-  const coverUrl = activity.cover || "https://i.imgur.com/8QfQFfC.png";
-
-  const stateKey = name + state;
-  if (stateKey === lastActivityState) return;
-
-  icon.src = getActivityLogo(name, activity);
-
-  if (activity.applicationId?.startsWith?.("xbox")) {
-    platformPill.textContent = "XBOX";
-  } else if (activity.applicationId?.startsWith?.("ps")) {
-    platformPill.textContent = "PLAYSTATION";
-  } else if (activity.applicationId) {
-    platformPill.textContent = "APP";
-  } else {
-    platformPill.textContent = "PRESENCE";
-  }
-
-  if (activityTimerInterval) clearInterval(activityTimerInterval);
-
-  const start = activity.timestamps?.start
-    ? new Date(activity.timestamps.start)
-    : null;
-
-  if (start) {
-    activityTimerInterval = setInterval(() => {
-      const now = new Date();
-      const diff = now - start;
-
-      const mins = Math.floor(diff / 60000);
-      const secs = Math.floor((diff % 60000) / 1000);
-
-      timePlayed.textContent = `${mins}m ${secs}s`;
-    }, 1000);
-  } else {
-    timePlayed.textContent = "";
-  }
-
-  title.textContent = name;
-  details.textContent = state;
-  cover.src = coverUrl;
-
-  panel.classList.add("active");
-  lastActivityState = stateKey;
-
-  logLine(`[Activity] ${name}`);
-}
-
-// ===============================
 // MUSIC TOGGLE + COPY LINK
 // ===============================
 document.addEventListener("DOMContentLoaded", () => {
   const btn = document.getElementById("music-unlock");
   const audio = document.getElementById("bg-audio");
-  const copyBtn = document.getElementById("copy-link");
 
   if (audio) audio.muted = true;
 
@@ -305,20 +203,6 @@ document.addEventListener("DOMContentLoaded", () => {
         }
       } catch (err) {
         console.error("[Audio] Play blocked:", err);
-      }
-    });
-  }
-
-  if (copyBtn) {
-    copyBtn.addEventListener("click", async () => {
-      const url = "https://alwaysclouded.github.io/Slvmber/";
-      try {
-        await navigator.clipboard.writeText(url);
-        copyBtn.textContent = "COPIED";
-        setTimeout(() => (copyBtn.textContent = "COPY PROFILE LINK"), 1500);
-      } catch {
-        copyBtn.textContent = "FAILED";
-        setTimeout(() => (copyBtn.textContent = "COPY PROFILE LINK"), 1500);
       }
     });
   }
