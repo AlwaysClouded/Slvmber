@@ -1,0 +1,55 @@
+:root {
+  --rose: #E7A7B7;
+  --sage: #A8C3A0;
+  --porcelain: #F8F7F4;
+  --graphite: #2A2A2A;
+  --glass: rgba(255,255,255,0.35);
+}
+
+/* Presence Card */
+.presence-card {
+  background: var(--glass);
+  backdrop-filter: blur(12px);
+  border: 1px solid var(--sage);
+  border-radius: 16px;
+  padding: 18px;
+  width: 320px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* Status Dot */
+.presence-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  box-shadow: 0 0 8px var(--sage);
+}
+
+/* Avatar */
+.presence-avatar {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  border: 2px solid var(--rose);
+  box-shadow: 0 0 12px var(--rose);
+}
+
+/* Spotify Card */
+.spotify-card {
+  background: var(--glass);
+  backdrop-filter: blur(12px);
+  border: 1px solid var(--rose);
+  border-radius: 16px;
+  padding: 18px;
+  width: 320px;
+  margin-top: 20px;
+}
+
+.spotify-cover {
+  width: 72px;
+  height: 72px;
+  border-radius: 8px;
+  box-shadow: 0 0 12px var(--sage);
+}
